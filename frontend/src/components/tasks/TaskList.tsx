@@ -1,0 +1,111 @@
+import React from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Chip,
+  IconButton,
+  Typography,
+} from "@mui/material";
+import { Delete as DeleteIcon, Edit as EditIcon } from "@mui/icons-material";
+
+interface Task {
+  id: number;
+  title: string;
+  description: string;
+  status: "Pendente" | "Completo" | "Cancelado";
+  endDate: string;
+  done: boolean;
+  assignee: {
+    id: number;
+    name: string;
+  };
+}
+
+interface TaskListProps {
+  tasks: Task[];
+  onEdit: (task: Task) => void;
+  onDelete: (id: number) => void;
+  loading?: boolean;
+}
+
+export const TaskList: React.FC<TaskListProps> = ({
+  tasks,
+  onEdit,
+  onDelete,
+  loading = false
+}) => {
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "Completo":
+        return "success";
+      case "Cancelado":
+        return "error";
+      default:
+        return "warning";
+    }
+  };
+
+  if (loading) {
+    return <Typography>Carregando tarefas...</Typography>;
+  }
+
+  if (tasks.length === 0) {
+    return <Typography>Nenhuma tarefa encontrada.</Typography>;
+  }
+
+  return (
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
+            <TableCell>Título</TableCell>
+            <TableCell>Descrição</TableCell>
+            <TableCell>Prazo</TableCell>
+            <TableCell>Responsável</TableCell>
+            <TableCell align="center">Status</TableCell>
+            <TableCell align="center">Ações</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {tasks.map((task) => (
+            <TableRow key={task.id} hover>
+              <TableCell>{task.title}</TableCell>
+              <TableCell>{task.description}</TableCell>
+              <TableCell>
+                {new Date(task.endDate).toLocaleDateString('pt-BR')}
+              </TableCell>
+              <TableCell>{task.assignee?.name}</TableCell>
+              <TableCell align="center">
+                <Chip
+                  label={task.status}
+                  color={getStatusColor(task.status)}
+                />
+              </TableCell>
+              <TableCell align="center">
+                <IconButton
+                  color="primary"
+                  onClick={() => onEdit(task)}
+                  title="Editar tarefa"
+                >
+                  <EditIcon />
+                </IconButton>
+                <IconButton
+                  color="error"
+                  onClick={() => onDelete(task.id)}
+                  title="Deletar tarefa"
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
