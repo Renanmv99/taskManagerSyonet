@@ -10,6 +10,7 @@ import {
   Chip,
   IconButton,
   Typography,
+  Tooltip,
 } from "@mui/material";
 import { Delete as DeleteIcon, Edit as EditIcon } from "@mui/icons-material";
 
@@ -87,6 +88,7 @@ export const TaskList: React.FC<TaskListProps> = ({
                 />
               </TableCell>
               <TableCell align="center">
+                <Tooltip title="Editar tarefa">
                 <IconButton
                   color="primary"
                   onClick={() => onEdit(task)}
@@ -94,6 +96,8 @@ export const TaskList: React.FC<TaskListProps> = ({
                 >
                   <EditIcon />
                 </IconButton>
+                </Tooltip>
+                <Tooltip title="Excluir tarefa">
                 <IconButton
                   color="error"
                   onClick={() => onDelete(task.id)}
@@ -101,6 +105,7 @@ export const TaskList: React.FC<TaskListProps> = ({
                 >
                   <DeleteIcon />
                 </IconButton>
+                </Tooltip>
               </TableCell>
             </TableRow>
           ))}

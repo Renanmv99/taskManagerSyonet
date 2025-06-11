@@ -9,6 +9,7 @@ import {
   Chip,
   IconButton,
   Typography,
+  Tooltip,
 } from "@mui/material";
 import { Delete as DeleteIcon, Edit as EditIcon } from "@mui/icons-material";
 
@@ -55,18 +56,22 @@ export const UserList = ({ users, isAdmin, onEdit, onDelete }: UserListProps) =>
               </TableCell>
               {isAdmin && (
                 <TableCell align="center">
+                  <Tooltip title="Editar usuário">
                   <IconButton
                     color="primary"
                     onClick={() => onEdit(user)}
                   >
                     <EditIcon />
                   </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Excluir usuário">
                   <IconButton
                     color="error"
                     onClick={() => onDelete(user.id)}
                   >
                     <DeleteIcon />
                   </IconButton>
+                  </Tooltip>
                 </TableCell>
               )}
             </TableRow>
