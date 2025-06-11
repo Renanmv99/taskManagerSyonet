@@ -15,6 +15,10 @@ interface UserModalProps {
   setName: (name: string) => void;
   email: string;
   setEmail: (email: string) => void;
+  password: string;
+  setPassword:(password: string) => void;
+  oldPassword: string;
+  setOldPassword:(password: string) => void;
   admin: boolean;
   setAdmin: (admin: boolean) => void;
   error?: string;
@@ -28,6 +32,10 @@ export const UserModal = ({
   setName,
   email,
   setEmail,
+  password,
+  setPassword,
+  oldPassword,
+  setOldPassword,
   admin,
   setAdmin,
   error,
@@ -42,6 +50,10 @@ export const UserModal = ({
             setName={setName}
             email={email}
             setEmail={setEmail}
+            password={password}
+            setPassword={setPassword}
+            oldPassword={oldPassword}
+            setOldPassword={setOldPassword}
             admin={admin}
             setAdmin={setAdmin}
             error={error}

@@ -22,6 +22,10 @@ export default function Users() {
     setName,
     email,
     setEmail,
+    password,
+    setPassword,
+    oldPassword,
+    setOldPassword,
     admin,
     setAdmin,
     editError,
@@ -62,7 +66,11 @@ export default function Users() {
         admin={admin}
         setAdmin={setAdmin}
         error={editError}
-      />
+        password={password}
+        setPassword={setPassword}
+        oldPassword={oldPassword}
+        setOldPassword={setOldPassword}
+            />
 
       <Snackbar
         open={snackbar.open}

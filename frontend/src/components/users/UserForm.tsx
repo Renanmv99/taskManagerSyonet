@@ -11,6 +11,10 @@ interface UserFormProps {
   setName: (name: string) => void;
   email: string;
   setEmail: (email: string) => void;
+  password: string;
+  setPassword: (password: string) => void;
+  oldPassword: string;
+  setOldPassword: (password: string) => void;
   admin: boolean;
   setAdmin: (admin: boolean) => void;
   error?: string;
@@ -21,6 +25,10 @@ export const UserForm = ({
   setName,
   email,
   setEmail,
+  password,
+  setPassword,
+  oldPassword,
+  setOldPassword,
   admin,
   setAdmin,
   error,
@@ -44,6 +52,22 @@ export const UserForm = ({
         onChange={(e) => setEmail(e.target.value)}
       />
 
+      <TextField
+        placeholder="Insira a nova senha"
+        fullWidth
+        required
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <TextField
+        placeholder="Insira a senha atual"
+        fullWidth
+        required
+        type="password"
+        value={oldPassword}
+        onChange={(e) => setOldPassword(e.target.value)}
+      />
       <FormControlLabel
         control={
           <Checkbox

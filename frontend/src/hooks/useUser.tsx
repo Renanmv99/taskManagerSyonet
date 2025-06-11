@@ -31,6 +31,8 @@ export const useUser = () => {
   
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
   const [admin, setAdmin] = useState(false);
   const [editError, setEditError] = useState("");
 
@@ -166,6 +168,8 @@ export const useUser = () => {
     setEditingUserId(user.id);
     setName(user.name);
     setEmail(user.email);
+    setPassword("")
+    setOldPassword("")
     setAdmin(user.admin);
     setIsModalOpen(true);
     setEditError("");
@@ -176,6 +180,8 @@ export const useUser = () => {
     setEditingUserId(null);
     setName("");
     setEmail("");
+    setPassword("")
+    setOldPassword("")
     setAdmin(false);
     setEditError("");
   };
@@ -199,6 +205,8 @@ export const useUser = () => {
         body: JSON.stringify({
           name,
           email,
+          password,
+          oldPassword,
           admin,
         }),
       });
@@ -236,6 +244,10 @@ export const useUser = () => {
     setName,
     email,
     setEmail,
+    password,
+    setPassword,
+    oldPassword,
+    setOldPassword,
     admin,
     setAdmin,
     editError,
