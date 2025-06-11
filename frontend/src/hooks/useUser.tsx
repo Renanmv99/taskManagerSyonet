@@ -57,6 +57,49 @@ export const useUser = () => {
     fetchUsers(token);
   }, [navigate]);
 
+  const refreshToken = async (): Promise<string | null> => {
+    const refreshToken = localStorage.getItem("refreshToken");
+    if (!refreshToken) {
+      navigate("/");
+      return null;
+    }
+
+    try {
+      const response = await fetch("http://localhost:8080/auth/refresh", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ refreshToken }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem("token", data.token);
+        
+        const decoded = parseJwt(data.token);
+        if (decoded?.groups?.includes("admin")) {
+          setIsAdmin(true);
+        } else {
+          setIsAdmin(false);
+        }
+        
+        return data.token;
+      } else {
+        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
+        navigate("/");
+        return null;
+      }
+    } catch (error) {
+      console.error("Erro ao fazer refresh do token:", error);
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
+      navigate("/");
+      return null;
+    }
+  };
+
   const fetchUsers = (token: string) => {
     fetch("http://localhost:8080/user", {
       headers: { Authorization: `Bearer ${token}` },
@@ -80,45 +123,44 @@ export const useUser = () => {
     setSnackbar({ ...snackbar, open: false });
   };
 
-const handleDelete = (id: number) => {
-  const confirmed = window.confirm("Tem certeza que deseja deletar este usuário?");
-  if (!confirmed) return;
+  const handleDelete = (id: number) => {
+    const confirmed = window.confirm("Tem certeza que deseja deletar este usuário?");
+    if (!confirmed) return;
 
-  const token = localStorage.getItem("token");
-  if (!token) {
-    showSnackbar("Você precisa estar logado.", "error");
-    return;
-  }
+    const token = localStorage.getItem("token");
+    if (!token) {
+      showSnackbar("Você precisa estar logado.", "error");
+      return;
+    }
 
-  if (users.length <= 1) {
-    showSnackbar("Você não pode deletar o único usuário.", "error");
-    return;
-  }
+    if (users.length <= 1) {
+      showSnackbar("Você não pode deletar o único usuário.", "error");
+      return;
+    }
 
-  fetch(`http://localhost:8080/user/${id}`, {
-    method: "DELETE",
-    headers: { Authorization: `Bearer ${token}` },
-  })
-    .then(async (res) => {
-      if (res.ok) {
-        setUsers((prev) => prev.filter((u) => u.id !== id));
-        showSnackbar("Usuário deletado com sucesso!", "success");
-      } else {
-        const errorMessage = await res.text();
-        
-        if (res.status === 409 ) {
-          showSnackbar(
-            errorMessage || "Este usuário não pode ser deletado pois possui tarefas atreladas.",
-            "error"
-          );
-        } else {
-          showSnackbar(errorMessage || "Erro ao deletar usuário.", "error");
-        }
-      }
+    fetch(`http://localhost:8080/user/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
     })
-    .catch(() => showSnackbar("Erro de conexão com o backend.", "error"));
-};
-
+      .then(async (res) => {
+        if (res.ok) {
+          setUsers((prev) => prev.filter((u) => u.id !== id));
+          showSnackbar("Usuário deletado com sucesso!", "success");
+        } else {
+          const errorMessage = await res.text();
+          
+          if (res.status === 409 ) {
+            showSnackbar(
+              errorMessage || "Este usuário não pode ser deletado pois possui tarefas atreladas.",
+              "error"
+            );
+          } else {
+            showSnackbar(errorMessage || "Erro ao deletar usuário.", "error");
+          }
+        }
+      })
+      .catch(() => showSnackbar("Erro de conexão com o backend.", "error"));
+  };
 
   const openEditModal = (user: User) => {
     setEditingUserId(user.id);
@@ -169,6 +211,12 @@ const handleDelete = (id: number) => {
         );
         closeModal();
         showSnackbar("Usuário atualizado com sucesso!", "success");
+        
+        const decoded = parseJwt(token);
+        if (decoded?.id === editingUserId) {
+          await refreshToken();
+          showSnackbar("Informações atualizadas com sucesso!", "success");
+        }
       } else {
         const data = await res.text();
         setEditError(`Erro ao editar usuário: ${data}`);
@@ -200,5 +248,6 @@ const handleDelete = (id: number) => {
     closeModal,
     handleEditSubmit,
     showSnackbar,
+    refreshToken,
   };
 };

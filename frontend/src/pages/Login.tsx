@@ -4,13 +4,11 @@ import { useNavigate } from "react-router-dom";
 import AddTaskOutlinedIcon from '@mui/icons-material/AddTaskOutlined';
 import type { SnackbarState } from "./Register";
 
-
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
   const [snackbar, setSnackbar] = useState<SnackbarState>({
     open: false,
     message: "",
@@ -59,12 +57,12 @@ export default function Login() {
 
       const data = await res.json();
       localStorage.setItem("token", data.token);
+      localStorage.setItem("refreshToken", data.refreshToken);
       navigate("/tasks");
     } catch (err) {
       showSnackbar("Erro ao conectar com servidor!", "error");
     }
   };
-
 
   return (
     <Container maxWidth="xs">
@@ -93,7 +91,7 @@ export default function Login() {
             sx={{ mb: 2 }}
             onChange={(e) => setEmail(e.target.value)}
           />
-
+          
           <TextField
             placeholder="Senha"
             fullWidth
@@ -102,7 +100,6 @@ export default function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-
 
           {error && <p style={{ color: "red" }}>{error}</p>}
           <Button type="submit" variant="contained" fullWidth sx={{ mt: 1 }}>
@@ -125,7 +122,6 @@ export default function Login() {
               Registrar
             </Button>
           </Box>
-
           <Snackbar
             open={snackbar.open}
             autoHideDuration={4000}
