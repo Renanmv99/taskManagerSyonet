@@ -25,6 +25,7 @@ export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
   const [admin, setAdmin] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -94,6 +95,21 @@ export default function Register() {
       return;
     }
 
+    if (!password2.trim()) {
+      showSnackbar("Preencha os dois campos de senha!", "error");
+      return;
+    }
+
+    if(password.length < 5){
+      showSnackbar("Senha precisa de no mínimo 5 caracteres", "error");
+      return;
+    }
+
+    if (password != password2) {
+      showSnackbar("Senhas precisam ser iguais!", "error");
+      return;
+    }
+
     try {
       const res = await fetch("http://localhost:8080/auth/register", {
         method: "POST",
@@ -138,6 +154,7 @@ export default function Register() {
           </Typography>
 
           <Box component="form" onSubmit={handleRegister} noValidate sx={{ mt: 1 }}>
+
             <TextField
               fullWidth
               value={name}
@@ -164,8 +181,19 @@ export default function Register() {
               required
               type="password"
               value={password}
+              sx={{ mb: 2 }}
               onChange={(e) => setPassword(e.target.value)}
             />
+
+            <TextField
+              placeholder="Confirme a senha"
+              fullWidth
+              required
+              type="password"
+              value={password2}
+              onChange={(e) => setPassword2(e.target.value)}
+            />
+
 
             {admin && (
               <FormControlLabel
