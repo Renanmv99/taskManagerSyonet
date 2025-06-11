@@ -8,7 +8,6 @@ import {
 import { Add as AddIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../components/Header";
-import { Sidebar } from "../components/Drawer";
 import { TaskFilter } from "../components/TaskFilter";
 import { TaskSearch } from "../components/TaskSearch";
 import { TaskList } from "../components/tasks/TaskList";
@@ -43,8 +42,6 @@ interface TaskFormData {
   status: "Pendente" | "Completo" | "Cancelado";
 }
 
-const drawerWidth = 240;
-
 function parseJwt(token: string) {
   try {
     return JSON.parse(atob(token.split(".")[1]));
@@ -54,7 +51,6 @@ function parseJwt(token: string) {
 }
 
 export default function Tasks() {
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [currentFilters, setCurrentFilters] = useState<Filters>({});
   
@@ -204,10 +200,8 @@ export default function Tasks() {
 
   return (
     <Box>
-      <Header onMenuClick={() => setDrawerOpen(!drawerOpen)} />
-      <Sidebar open={drawerOpen} onClose={() => setDrawerOpen(false)} />
-
-      <Box sx={{ marginLeft: `${drawerOpen ? drawerWidth : 0}px`, marginTop: 7, padding: 4 }}>
+      <Header/>
+      <Box sx={{ marginTop: 7, padding: 4 }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 2, mb: 2 }}>
           <Box>
             {isAdmin && (

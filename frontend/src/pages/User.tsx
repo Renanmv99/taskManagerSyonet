@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Box,
   Typography,
@@ -7,15 +6,11 @@ import {
 } from "@mui/material";
 
 import { Header } from "../components/Header";
-import { Sidebar } from "../components/Drawer";
 import { UserList } from "../components/users/UserList";
 import { UserModal } from "../components/users/UserModal";
 import { useUser } from "../hooks/useUser";
 
-const drawerWidth = 240;
-
 export default function Users() {
-  const [drawerOpen, setDrawerOpen] = useState(false);
   
   const {
     users,
@@ -42,10 +37,8 @@ export default function Users() {
 
   return (
     <Box>
-      <Header onMenuClick={() => setDrawerOpen(!drawerOpen)} />
-      <Sidebar open={drawerOpen} onClose={() => setDrawerOpen(false)} />
-
-      <Box sx={{ marginLeft: `${drawerOpen ? drawerWidth : 0}px`, marginTop: 7, padding: 4 }}>
+      <Header/>
+      <Box sx={{ marginTop: 7, padding: 4 }}>
         <Typography variant="h4" gutterBottom>
           Lista de Usuários
         </Typography>
