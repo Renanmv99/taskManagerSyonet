@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Alert,
+  Snackbar,
 } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
@@ -74,6 +75,8 @@ export default function Tasks() {
     updateTask,
     deleteTask,
     clearMessages,
+    snackbar,
+    closeSnackbar
   } = useTasks();
 
   useEffect(() => {
@@ -261,6 +264,21 @@ export default function Tasks() {
         task={editingTask}
         onSubmit={handleTaskSubmit}
       />
+            <Snackbar
+              open={snackbar.open}
+              autoHideDuration={4000}
+              onClose={closeSnackbar}
+              anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+              <Alert
+                onClose={closeSnackbar}
+                severity={snackbar.severity}
+                sx={{ width: '100%' }}
+              >
+                {snackbar.message}
+              </Alert>
+            </Snackbar>
     </Box>
+    
   );
 }

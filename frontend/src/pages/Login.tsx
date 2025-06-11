@@ -1,7 +1,8 @@
-import { Avatar, Box, Button, Container, Paper, TextField, Typography } from "@mui/material";
+import { Alert, Avatar, Box, Button, Container, Paper, Snackbar, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AddTaskOutlinedIcon from '@mui/icons-material/AddTaskOutlined';
+import type { SnackbarState } from "./Register";
 
 
 export default function Login() {
@@ -10,9 +11,33 @@ export default function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const [snackbar, setSnackbar] = useState<SnackbarState>({
+    open: false,
+    message: "",
+    severity: "success"
+  });
+
+  const showSnackbar = (message: string, severity: "success" | "error") => {
+    setSnackbar({ open: true, message, severity });
+  };
+
+  const closeSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    if (!email.trim()) {
+      showSnackbar("Email é obrigatório!", "error");
+      return;
+    }
+
+    if (!password.trim()) {
+      showSnackbar("Senha é obrigatória!", "error");
+      return;
+    }
 
     try {
       const res = await fetch("http://localhost:8080/auth/login", {
@@ -25,9 +50,9 @@ export default function Login() {
 
       if (!res.ok) {
         if (res.status === 401) {
-          setError("Credenciais inválidas.");
+          showSnackbar("Credenciais inválidas!", "error");
         } else {
-          setError("Erro inesperado.");
+          showSnackbar("Erro inesperado!", "error");
         }
         return;
       }
@@ -36,7 +61,7 @@ export default function Login() {
       localStorage.setItem("token", data.token);
       navigate("/tasks");
     } catch (err) {
-      setError("Erro ao conectar com o servidor.");
+      showSnackbar("Erro ao conectar com servidor!", "error");
     }
   };
 
@@ -47,7 +72,7 @@ export default function Login() {
         <Avatar
           sx={{
             mx: "auto",
-            bgcolor: "secondary.main",
+            bgcolor: "primary.main",
             textAlign: "center",
             mb: 1,
           }}
@@ -101,9 +126,20 @@ export default function Login() {
             </Button>
           </Box>
 
-
-
-
+          <Snackbar
+            open={snackbar.open}
+            autoHideDuration={4000}
+            onClose={closeSnackbar}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          >
+            <Alert
+              onClose={closeSnackbar}
+              severity={snackbar.severity}
+              sx={{ width: '100%' }}
+            >
+              {snackbar.message}
+            </Alert>
+          </Snackbar>
         </Box>
       </Paper>
     </Container>

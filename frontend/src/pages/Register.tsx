@@ -7,11 +7,19 @@ import {
   TextField,
   Typography,
   Checkbox,
-  FormControlLabel
+  FormControlLabel,
+  Snackbar,
+  Alert
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AddTaskOutlinedIcon from '@mui/icons-material/AddTaskOutlined';
+
+export interface SnackbarState {
+  open: boolean;
+  message: string;
+  severity: "success" | "error";
+}
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -19,8 +27,18 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [admin, setAdmin] = useState(false);
   const [error, setError] = useState("");
-
   const navigate = useNavigate();
+
+  const [snackbar, setSnackbar] = useState<SnackbarState>({
+    open: false,
+    message: "",
+    severity: "success"
+  });
+
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   useEffect(() => {
     const checkUsers = async () => {
@@ -34,19 +52,47 @@ export default function Register() {
             setAdmin(false);
           }
         } else {
-          setError("Erro ao verificar usuários existentes.");
+          showSnackbar("Erro ao verificar usuários!", "error");
         }
       } catch (err) {
-        setError("Erro ao conectar com o servidor.");
+        showSnackbar("Erro ao conectar com servidor!", "error");
       }
     };
 
     checkUsers();
   }, []);
 
+  const showSnackbar = (message: string, severity: "success" | "error") => {
+    setSnackbar({ open: true, message, severity });
+  };
+
+  const closeSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
+
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    if (!name.trim()) {
+      showSnackbar("Nome é obrigatório!", "error");
+      return;
+    }
+
+    if (!email.trim()) {
+      showSnackbar("Email é obrigatório!", "error");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      showSnackbar("Email precisa ser válido!", "error");
+      return;
+    }
+
+    if (!password.trim()) {
+      showSnackbar("Senha é obrigatória!", "error");
+      return;
+    }
 
     try {
       const res = await fetch("http://localhost:8080/auth/register", {
@@ -56,91 +102,114 @@ export default function Register() {
       });
 
       if (res.status === 201) {
-        navigate("/");
+        showSnackbar("Cadastro realizado com sucesso!", "success");
+        setTimeout(() => {
+          navigate("/");
+        }, 1500)
       } else if (res.status === 409) {
-        setError("Email já cadastrado.");
+        showSnackbar("Email já cadastrado!", "error");
+      } else if (res.status === 400) {
+        const errorData = await res.json();
+        showSnackbar(errorData.message || "Dados inválidos!", "error");
       } else {
-        setError("Erro inesperado.");
+        showSnackbar("Erro inesperado!", "error");
       }
     } catch (err) {
-      setError("Erro ao conectar com o servidor.");
+      showSnackbar("Erro ao conectar com servidor!", "error");
     }
   };
 
   return (
-    <Container maxWidth="xs">
-      <Paper elevation={10} sx={{ marginTop: 8, padding: 2 }}>
-        <Avatar
-          sx={{
-            mx: "auto",
-            bgcolor: "secondary.main",
-            textAlign: "center",
-            mb: 1,
-          }}
-        >
-          <AddTaskOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5" sx={{ textAlign: "center" }}>
-          Registro
-        </Typography>
+    <>
+      <Container maxWidth="xs">
+        <Paper elevation={10} sx={{ marginTop: 8, padding: 2 }}>
+          <Avatar
+            sx={{
+              mx: "auto",
+              bgcolor: "primary.main",
+              textAlign: "center",
+              mb: 1,
+            }}
+          >
+            <AddTaskOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5" sx={{ textAlign: "center" }}>
+            Registro
+          </Typography>
 
-        <Box component="form" onSubmit={handleRegister} noValidate sx={{ mt: 1 }}>
-          <TextField
-            fullWidth
-            value={name}
-            placeholder="Nome completo"
-            required
-            autoFocus
-            sx={{ mb: 2 }}
-            onChange={(e) => setName(e.target.value)}
-          />
-
-          <TextField
-            placeholder="Email"
-            fullWidth
-            required
-            type="email"
-            value={email}
-            sx={{ mb: 2 }}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-
-          <TextField
-            placeholder="Senha"
-            fullWidth
-            required
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-
-          {admin && (
-            <FormControlLabel
-              control={<Checkbox checked disabled color="primary" />}
-              label="Administrador"
+          <Box component="form" onSubmit={handleRegister} noValidate sx={{ mt: 1 }}>
+            <TextField
+              fullWidth
+              value={name}
+              placeholder="Nome completo"
+              required
+              autoFocus
+              sx={{ mb: 2 }}
+              onChange={(e) => setName(e.target.value)}
             />
-          )}
 
-          <Button type="submit" variant="contained" fullWidth sx={{ mt: 1 }}>
-            Registrar
-          </Button>
-        </Box>
+            <TextField
+              placeholder="Email"
+              fullWidth
+              required
+              type="email"
+              value={email}
+              sx={{ mb: 2 }}
+              onChange={(e) => setEmail(e.target.value)}
+            />
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
+            <TextField
+              placeholder="Senha"
+              fullWidth
+              required
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 1,
-            mt: 2,
-          }}
+            {admin && (
+              <FormControlLabel
+                control={<Checkbox checked disabled color="primary" />}
+                label="Administrador"
+              />
+            )}
+
+            <Button type="submit" variant="contained" fullWidth sx={{ mt: 1 }}>
+              Registrar
+            </Button>
+          </Box>
+
+          {error && <p style={{ color: "red" }}>{error}</p>}
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: 1,
+              mt: 2,
+            }}
+          >
+            <Typography>Já tem uma conta?</Typography>
+            <Button onClick={() => navigate("/")}>Fazer Login</Button>
+          </Box>
+        </Paper>
+      </Container>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={closeSnackbar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={closeSnackbar}
+          severity={snackbar.severity}
+          sx={{ width: '100%' }}
         >
-          <Typography>Já tem uma conta?</Typography>
-          <Button onClick={() => navigate("/")}>Fazer Login</Button>
-        </Box>
-      </Paper>
-    </Container>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+    </>
   );
 }

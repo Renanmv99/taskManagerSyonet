@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import type { SnackbarState } from "../pages/Register";
 
 interface Task {
   id: number;
@@ -41,14 +42,28 @@ export const useTasks = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  
+
+  const [snackbar, setSnackbar] = useState<SnackbarState>({
+    open: false,
+    message: "",
+    severity: "success"
+  });
+
+  const showSnackbar = (message: string, severity: "success" | "error") => {
+    setSnackbar({ open: true, message, severity });
+  };
+
+  const closeSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
+
   const navigate = useNavigate();
   const fetchingRef = useRef(false);
   const lastFetchParamsRef = useRef<string>("");
 
   const fetchTasks = useCallback(async (token: string, filters?: Filters, forceRefresh = false) => {
     const paramsString = JSON.stringify(filters || {});
-    
+
     if (!forceRefresh && (fetchingRef.current || paramsString === lastFetchParamsRef.current)) {
       return;
     }
@@ -76,10 +91,10 @@ export const useTasks = () => {
         setTasks(data);
         setError("");
       } else {
-        setError("Erro ao buscar tarefas.");
+        showSnackbar("Erro ao buscar tarefas.", "error");
       }
     } catch (err) {
-      setError("Erro de conexão com o backend.");
+      showSnackbar("Erro de conexão com o backend.", "error");
     } finally {
       setLoading(false);
       fetchingRef.current = false;
@@ -127,16 +142,16 @@ export const useTasks = () => {
       if (res.status === 201) {
         fetchingRef.current = false;
         lastFetchParamsRef.current = "";
-        
-        setSuccessMessage("Tarefa criada com sucesso!");
+
+        showSnackbar("Tarefa criada com sucesso!", "success")
         return true;
       } else {
         const data = await res.text();
-        setError(`Erro ao criar tarefa: ${data}`);
+        showSnackbar(`Erro ao criar tarefa: ${data}`, "error");
         return false;
       }
     } catch (err) {
-      setError("Erro ao conectar com o backend.");
+      showSnackbar("Erro ao conectar com o backend.", "error")
       return false;
     }
   }, [navigate]);
@@ -171,15 +186,15 @@ export const useTasks = () => {
             task.id === updatedTask.id ? updatedTask : task
           )
         );
-        setSuccessMessage("Tarefa atualizada com sucesso!");
+        showSnackbar("Tarefa atualizada com sucesso!", "success")
         return true;
       } else {
         const data = await res.text();
-        setError(`Erro ao editar tarefa: ${data}`);
+        showSnackbar(`Erro ao editar tarefa: ${data}`, "error")
         return false;
       }
     } catch (err) {
-      setError("Erro ao conectar com o backend.");
+      showSnackbar("Erro ao conectar com o backend.", "error")
       return false;
     }
   }, [navigate]);
@@ -190,7 +205,7 @@ export const useTasks = () => {
 
     const token = localStorage.getItem("token");
     if (!token) {
-      setError("Você precisa estar logado.");
+      showSnackbar("Você precisa estar logado", "error")
       return false;
     }
 
@@ -202,14 +217,14 @@ export const useTasks = () => {
 
       if (res.ok) {
         setTasks((prev) => prev.filter((t) => t.id !== id));
-        setSuccessMessage("Tarefa deletada com sucesso!");
+        showSnackbar("Tarefa deletada com sucesso!", "success")
         return true;
       } else {
-        setError("Erro ao deletar a tarefa.");
+        showSnackbar("Erro ao deletar a tarefa.", "error");
         return false;
       }
     } catch (err) {
-      setError("Erro de conexão com o backend.");
+      showSnackbar("Erro de conexão com o backend.", "error");
       return false;
     }
   }, []);
@@ -225,7 +240,10 @@ export const useTasks = () => {
     loading,
     error,
     successMessage,
-    
+
+    snackbar,
+    closeSnackbar,
+
     fetchTasks,
     fetchUsers,
     createTask,
