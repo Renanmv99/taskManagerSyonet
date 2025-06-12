@@ -117,7 +117,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
     };
 
     const success = await onSubmit(formData);
-    
+
     setIsSubmitting(false);
 
     if (success) {
@@ -154,22 +154,22 @@ export const TaskForm: React.FC<TaskFormProps> = ({
           disabled={isSubmitting}
         />
 
-<DatePicker
-  label="Data de Entrega"
-  value={endDate ? dayjs(endDate) : null}
-  onChange={(newValue) => {
-    setEndDate(newValue ? newValue.format('YYYY-MM-DD') : '');
-  }}
-  disablePast
-  format="DD-MM-YYYY"
-  slotProps={{
-    textField: {
-      required: true,
-      fullWidth: true,
-      disabled: isSubmitting,
-    },
-  }}
-/>
+        <DatePicker
+          label="Data de Entrega"
+          value={endDate ? dayjs(endDate) : null}
+          onChange={(newValue) => {
+            setEndDate(newValue ? newValue.format('YYYY-MM-DD') : '');
+          }}
+          disablePast
+          format="DD-MM-YYYY"
+          slotProps={{
+            textField: {
+              required: true,
+              fullWidth: true,
+              disabled: isSubmitting,
+            },
+          }}
+        />
 
         <FormControl fullWidth required>
           <InputLabel>Responsável</InputLabel>
@@ -210,9 +210,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({
           <Button onClick={onCancel} disabled={isSubmitting}>
             Cancelar
           </Button>
-          <Button 
-            type="submit" 
-            variant="contained" 
+          <Button
+            type="submit"
+            variant="contained"
             disabled={isSubmitting || !assigneeId}
           >
             {isSubmitting ? "Salvando..." : submitLabel}

@@ -204,7 +204,7 @@ export default function Tasks() {
       <Box sx={{ marginTop: 7, padding: 4 }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 2, mb: 2 }}>
           <Box>
-            {isAdmin && (
+            {
               <Button
                 variant="contained"
                 startIcon={<AddIcon />}
@@ -212,7 +212,7 @@ export default function Tasks() {
               >
                 Criar Nova Tarefa
               </Button>
-            )}
+            }
           </Box>
 
           <Box sx={{ display: "flex", gap: 2 }}>
