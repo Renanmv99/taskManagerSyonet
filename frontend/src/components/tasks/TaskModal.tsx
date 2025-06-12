@@ -38,6 +38,8 @@ interface TaskModalProps {
   users: User[];
   task?: Task | null;
   onSubmit: (data: TaskFormData) => Promise<boolean>;
+  isAdmin: boolean;
+  currentUserId: number;
 }
 
 export const TaskModal: React.FC<TaskModalProps> = ({
@@ -45,7 +47,9 @@ export const TaskModal: React.FC<TaskModalProps> = ({
   onClose,
   users,
   task,
-  onSubmit
+  onSubmit,
+  isAdmin,
+  currentUserId
 }) => {
   const isEditing = !!task;
   const title = isEditing ? "Editar Tarefa" : "Criar Tarefa";
@@ -60,10 +64,10 @@ export const TaskModal: React.FC<TaskModalProps> = ({
   };
 
   return (
-    <Dialog 
-      open={open} 
-      onClose={onClose} 
-      maxWidth="sm" 
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="sm"
       fullWidth
     >
       <DialogTitle>{title}</DialogTitle>
@@ -74,6 +78,8 @@ export const TaskModal: React.FC<TaskModalProps> = ({
           onSubmit={handleSubmit}
           onCancel={onClose}
           submitLabel={submitLabel}
+          isAdmin={isAdmin}
+          currentUserId={currentUserId}
         />
       </DialogContent>
     </Dialog>

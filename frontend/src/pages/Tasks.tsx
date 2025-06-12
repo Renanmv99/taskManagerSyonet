@@ -52,6 +52,7 @@ function parseJwt(token: string) {
 
 export default function Tasks() {
   const [isAdmin, setIsAdmin] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState<number>(0);
   const [currentFilters, setCurrentFilters] = useState<Filters>({});
   
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -85,6 +86,10 @@ export default function Tasks() {
     const decoded = parseJwt(token);
     const adminStatus = decoded?.groups?.includes("admin") || false;
     setIsAdmin(adminStatus);
+    
+    if (decoded?.id) {
+      setCurrentUserId(decoded.id);
+    }
 
     fetchTasks(token);
     
@@ -156,7 +161,6 @@ export default function Tasks() {
     fetchTasks(token);
   }, [fetchTasks, navigate]);
 
-
   const openCreateModal = () => {
     setEditingTask(null);
     setIsModalOpen(true);
@@ -171,7 +175,6 @@ export default function Tasks() {
     setIsModalOpen(false);
     setEditingTask(null);
   };
-
 
   const handleTaskSubmit = async (data: TaskFormData): Promise<boolean> => {
     const token = localStorage.getItem("token");
@@ -257,22 +260,24 @@ export default function Tasks() {
         users={users}
         task={editingTask}
         onSubmit={handleTaskSubmit}
+        isAdmin={isAdmin}
+        currentUserId={currentUserId}
       />
-            <Snackbar
-              open={snackbar.open}
-              autoHideDuration={4000}
-              onClose={closeSnackbar}
-              anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-            >
-              <Alert
-                onClose={closeSnackbar}
-                severity={snackbar.severity}
-                sx={{ width: '100%' }}
-              >
-                {snackbar.message}
-              </Alert>
-            </Snackbar>
+      
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={closeSnackbar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={closeSnackbar}
+          severity={snackbar.severity}
+          sx={{ width: '100%' }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
-    
   );
 }

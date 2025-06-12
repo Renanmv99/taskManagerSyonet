@@ -12,6 +12,7 @@ import {
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
+
 interface User {
   id: number;
   name: string;
@@ -44,6 +45,8 @@ interface TaskFormProps {
   onSubmit: (data: TaskFormData) => Promise<boolean>;
   onCancel: () => void;
   submitLabel?: string;
+  isAdmin: boolean;
+  currentUserId: number;
 }
 
 export const TaskForm: React.FC<TaskFormProps> = ({
@@ -51,7 +54,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({
   initialData,
   onSubmit,
   onCancel,
-  submitLabel = "Salvar"
+  submitLabel = "Salvar",
+  isAdmin,
+  currentUserId
 }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -72,11 +77,11 @@ export const TaskForm: React.FC<TaskFormProps> = ({
       setTitle("");
       setDescription("");
       setEndDate("");
-      setAssigneeId("");
+      setAssigneeId(isAdmin ? "" : currentUserId);
       setStatus("Pendente");
     }
     setError("");
-  }, [initialData]);
+  }, [initialData, isAdmin, currentUserId]);
 
   const validateForm = (): boolean => {
     if (!title.trim()) {
@@ -125,7 +130,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
         setTitle("");
         setDescription("");
         setEndDate("");
-        setAssigneeId("");
+        setAssigneeId(isAdmin ? "" : currentUserId);
         setStatus("Pendente");
       }
     }
@@ -171,17 +176,18 @@ export const TaskForm: React.FC<TaskFormProps> = ({
           }}
         />
 
+        {isAdmin &&
         <FormControl fullWidth required>
           <InputLabel>Responsável</InputLabel>
           <Select
-            value={assigneeId}
-            onChange={(e) => setAssigneeId(e.target.value as number)}
-            label="Responsável"
-            disabled={isSubmitting}
+          value={assigneeId}
+          onChange={(e) => setAssigneeId(e.target.value as number)}
+          label="Responsável"
+          disabled={isSubmitting} 
           >
-            <MenuItem value="">
-              <em>Selecione um usuário</em>
-            </MenuItem>
+              <MenuItem value="">
+                <em>Selecione um usuário</em>
+              </MenuItem>           
             {users.map((user) => (
               <MenuItem key={user.id} value={user.id}>
                 {user.name} ({user.email})
@@ -189,6 +195,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
             ))}
           </Select>
         </FormControl>
+        }
 
         <FormControl fullWidth required>
           <InputLabel>Status</InputLabel>
