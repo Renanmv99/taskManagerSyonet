@@ -5,6 +5,7 @@ import java.util.List;
 import org.mindrot.jbcrypt.BCrypt;
 
 import br.com.syonet.dto.user.UpdateUserDTO;
+import br.com.syonet.dto.user.UserResponseDTO;
 import br.com.syonet.model.TaskModel;
 import br.com.syonet.model.UserModel;
 import br.com.syonet.repository.UserRepository;
@@ -24,9 +25,11 @@ public class UserService {
         return user;
     }
 
-    public List<UserModel> listAll() {
-        return userRepository.listAll();
-    }
+    public List<UserResponseDTO> listAll() {
+    return userRepository.listAll().stream()
+        .map(u -> new UserResponseDTO(u.getId(), u.getName(), u.getEmail(), u.isAdmin()))
+        .toList();
+}
 
     @Transactional
     public boolean deleteById(Long id) {
@@ -61,10 +64,10 @@ public class UserService {
             user.setEmail(update.email);
         }
 
-        if (update.password != null) {
+        if (update.password != null && !update.password.trim().isEmpty()) {
             String hashedPassword = BCrypt.hashpw(update.password, BCrypt.gensalt());
             user.setPassword(hashedPassword);
-        }
+        }        
 
         if (update.admin != null) {
             user.setAdmin(update.admin);
@@ -73,7 +76,9 @@ public class UserService {
         return true;
     }
 
-    public UserModel findById(Long id) {
-        return UserModel.findById(id);
+    public UserResponseDTO findById(Long id) {
+        UserModel user = userRepository.findById(id);
+        if (user == null) return null;
+        return new UserResponseDTO(user.getId(), user.getName(), user.getEmail(), user.isAdmin());
     }
 }

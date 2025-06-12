@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import br.com.syonet.dto.user.UpdateUserDTO;
+import br.com.syonet.dto.user.UserResponseDTO;
 import br.com.syonet.model.UserModel;
 import br.com.syonet.repository.UserRepository;
 import br.com.syonet.service.UserService;
@@ -33,7 +34,7 @@ public class UserResource {
     @GET
     @RolesAllowed("admin")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UserModel> listAll() {
+    public List<UserResponseDTO> listAll() {
         return userService.listAll();
     }
 
@@ -90,11 +91,10 @@ public class UserResource {
     @RolesAllowed("admin")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findById(@PathParam("id") Long id) {
-        UserModel user = userService.findById(id);
-        if (user == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        return Response.ok(user).build();
+        UserResponseDTO user = userService.findById(id);
+        return user != null
+                ? Response.ok(user).build()
+                : Response.status(Response.Status.NOT_FOUND).build();
     }
 
 }

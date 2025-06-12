@@ -4,8 +4,12 @@ import {
   DialogContent,
   DialogActions,
   Button,
+  Box,
+  TextField,
+  Checkbox,
+  FormControlLabel,
+  Alert,
 } from "@mui/material";
-import { UserForm } from "./UserForm";
 
 interface UserModalProps {
   open: boolean;
@@ -16,9 +20,7 @@ interface UserModalProps {
   email: string;
   setEmail: (email: string) => void;
   password: string;
-  setPassword:(password: string) => void;
-  oldPassword: string;
-  setOldPassword:(password: string) => void;
+  setPassword: (password: string) => void;
   admin: boolean;
   setAdmin: (admin: boolean) => void;
   error?: string;
@@ -34,8 +36,6 @@ export const UserModal = ({
   setEmail,
   password,
   setPassword,
-  oldPassword,
-  setOldPassword,
   admin,
   setAdmin,
   error,
@@ -45,19 +45,40 @@ export const UserModal = ({
       <DialogTitle>Editar Usuário</DialogTitle>
       <form onSubmit={onSubmit}>
         <DialogContent>
-          <UserForm
-            name={name}
-            setName={setName}
-            email={email}
-            setEmail={setEmail}
-            password={password}
-            setPassword={setPassword}
-            oldPassword={oldPassword}
-            setOldPassword={setOldPassword}
-            admin={admin}
-            setAdmin={setAdmin}
-            error={error}
-          />
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2, pt: 1 }}>
+            <TextField
+              label="Nome"
+              fullWidth
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <TextField
+              label="Email"
+              fullWidth
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+              placeholder="Insira a nova senha"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={admin}
+                  onChange={(e) => setAdmin(e.target.checked)}
+                  color="primary"
+                />
+              }
+              label="Administrador"
+            />
+            {error && (
+              <Alert severity="error">{error}</Alert>
+            )}
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Cancelar</Button>

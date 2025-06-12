@@ -32,7 +32,6 @@ export const useUser = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [oldPassword, setOldPassword] = useState("");
   const [admin, setAdmin] = useState(false);
   const [editError, setEditError] = useState("");
 
@@ -169,7 +168,6 @@ export const useUser = () => {
     setName(user.name);
     setEmail(user.email);
     setPassword("")
-    setOldPassword("")
     setAdmin(user.admin);
     setIsModalOpen(true);
     setEditError("");
@@ -181,7 +179,6 @@ export const useUser = () => {
     setName("");
     setEmail("");
     setPassword("")
-    setOldPassword("")
     setAdmin(false);
     setEditError("");
   };
@@ -206,7 +203,6 @@ export const useUser = () => {
           name,
           email,
           password,
-          oldPassword,
           admin,
         }),
       });
@@ -246,8 +242,6 @@ export const useUser = () => {
     setEmail,
     password,
     setPassword,
-    oldPassword,
-    setOldPassword,
     admin,
     setAdmin,
     editError,
