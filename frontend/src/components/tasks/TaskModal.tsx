@@ -159,7 +159,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
               required
               fullWidth
               multiline
-              rows={3}
+              rows={8}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               disabled={isSubmitting}
