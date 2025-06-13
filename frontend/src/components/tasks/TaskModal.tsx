@@ -74,21 +74,23 @@ export const TaskModal: React.FC<TaskModalProps> = ({
   const submitLabel = isEditing ? "Atualizar" : "Criar";
 
   useEffect(() => {
-    if (task) {
-      setTitle(task.title);
-      setDescription(task.description);
-      setEndDate(task.endDate);
-      setAssigneeId(task.assignee?.id || "");
-      setStatus(task.status);
-    } else {
-      setTitle("");
-      setDescription("");
-      setEndDate("");
-      setAssigneeId(isAdmin ? "" : currentUserId);
-      setStatus("Pendente");
+    if (open) {
+      if (task) {
+        setTitle(task.title);
+        setDescription(task.description);
+        setEndDate(task.endDate);
+        setAssigneeId(task.assignee?.id || "");
+        setStatus(task.status);
+      } else {
+        setTitle("");
+        setDescription("");
+        setEndDate("");
+        setAssigneeId(isAdmin ? "" : currentUserId);
+        setStatus("Pendente");
+      }
+      setError("");
     }
-    setError("");
-  }, [task, isAdmin, currentUserId]);
+  }, [open, task, isAdmin, currentUserId]);
 
   const validateForm = (): boolean => {
     if (!title.trim()) {

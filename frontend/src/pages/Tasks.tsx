@@ -4,6 +4,7 @@ import {
   Button,
   Alert,
   Snackbar,
+  Typography,
 } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
@@ -109,6 +110,7 @@ export default function Tasks() {
       return;
     }
 
+
     const newFilters = {
       ...filters,
       title: currentFilters.title
@@ -205,17 +207,20 @@ export default function Tasks() {
     <Box>
       <Header/>
       <Box sx={{ marginTop: 7, padding: 4 }}>
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 2, mb: 2 }}>
+        <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: 2, mb: 2 }}>
           <Box>
             {
               <Button
-                variant="contained"
-                startIcon={<AddIcon />}
-                onClick={openCreateModal}
+              variant="contained"
+              startIcon={<AddIcon />}
+              onClick={openCreateModal}
               >
                 Criar Nova Tarefa
               </Button>
             }
+          </Box>
+          <Box>
+            <Typography>Total de Tarefas: {tasks.length}</Typography>
           </Box>
 
           <Box sx={{ display: "flex", gap: 2 }}>
