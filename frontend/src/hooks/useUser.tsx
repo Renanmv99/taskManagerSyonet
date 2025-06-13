@@ -148,14 +148,8 @@ export const useUser = () => {
           setUsers((prev) => prev.filter((u) => u.id !== id));
           showSnackbar("Usuário deletado com sucesso!", "success");
         } else {
-          const errorMessage = await res.text();
-          
+          const errorMessage = await res.text();    
           if (res.status === 409 ) {
-            showSnackbar(
-              errorMessage || "Este usuário não pode ser deletado pois possui tarefas atreladas.",
-              "error"
-            );
-          } else {
             showSnackbar(errorMessage || "Erro ao deletar usuário.", "error");
           }
         }

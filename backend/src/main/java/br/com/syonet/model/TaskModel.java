@@ -36,7 +36,6 @@ public class TaskModel extends PanacheEntityBase{
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @NotNull(message = "Responsável não pode ser null")
     public UserModel assignee;
 
     public LocalDate endDate;

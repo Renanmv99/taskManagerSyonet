@@ -80,7 +80,7 @@ export const TaskList: React.FC<TaskListProps> = ({
               <TableCell>
                 {new Date(task.endDate).toLocaleDateString('pt-BR')}
               </TableCell>
-              <TableCell>{task.assignee?.name}</TableCell>
+              <TableCell>{task.assignee?.name || "Não atribuído"}</TableCell>
               <TableCell align="center">
                 <Chip
                   label={task.status}

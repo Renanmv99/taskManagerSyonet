@@ -1,9 +1,7 @@
 package br.com.syonet.service;
 
 import java.util.List;
-
 import org.mindrot.jbcrypt.BCrypt;
-
 import br.com.syonet.dto.user.UpdateUserDTO;
 import br.com.syonet.dto.user.UserResponseDTO;
 import br.com.syonet.model.TaskModel;
@@ -26,10 +24,10 @@ public class UserService {
     }
 
     public List<UserResponseDTO> listAll() {
-    return userRepository.listAll().stream()
-        .map(u -> new UserResponseDTO(u.getId(), u.getName(), u.getEmail(), u.isAdmin()))
-        .toList();
-}
+        return userRepository.listAll().stream()
+                .map(u -> new UserResponseDTO(u.getId(), u.getName(), u.getEmail(), u.isAdmin()))
+                .toList();
+    }
 
     @Transactional
     public boolean deleteById(Long id) {
@@ -39,10 +37,9 @@ public class UserService {
         }
 
         List<TaskModel> userTasks = TaskModel.find("assignee.id", id).list();
-        if (!userTasks.isEmpty()) {
-            throw new IllegalStateException(
-                    String.format("Este usuário não pode ser deletado pois possui %d tarefa(s) atrelada(s).",
-                            userTasks.size()));
+        for (TaskModel task : userTasks) {
+            task.setAssignee(null);
+            task.persist();
         }
 
         userRepository.delete(user);
@@ -67,7 +64,7 @@ public class UserService {
         if (update.password != null && !update.password.trim().isEmpty()) {
             String hashedPassword = BCrypt.hashpw(update.password, BCrypt.gensalt());
             user.setPassword(hashedPassword);
-        }        
+        }
 
         if (update.admin != null) {
             user.setAdmin(update.admin);
