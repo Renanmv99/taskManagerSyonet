@@ -234,13 +234,13 @@ export default function Tasks() {
               Total de Tarefas: {tasks.length}
             </Typography>
             <Box sx={{ display: "flex", gap: 2 }}>
-              <Typography variant="body2" sx={{ color: 'orange' }}>
+              <Typography variant="body2" color="warning">
                 Pendentes: {statusCounts.pendente}
               </Typography>
-              <Typography variant="body2" sx={{ color: 'green' }}>
+              <Typography variant="body2" color="success">
                 Completas: {statusCounts.completo}
               </Typography>
-              <Typography variant="body2" sx={{ color: 'red' }}>
+              <Typography variant="body2" color="error">
                 Canceladas: {statusCounts.cancelado}
               </Typography>
             </Box>

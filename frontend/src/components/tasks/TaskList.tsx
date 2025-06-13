@@ -64,6 +64,7 @@ export const TaskList: React.FC<TaskListProps> = ({
       <Table>
         <TableHead>
           <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
+            <TableCell>Id</TableCell>
             <TableCell>Título</TableCell>
             <TableCell>Descrição</TableCell>
             <TableCell>Prazo</TableCell>
@@ -75,8 +76,9 @@ export const TaskList: React.FC<TaskListProps> = ({
         <TableBody>
           {tasks.map((task) => (
             <TableRow key={task.id} hover>
-              <TableCell>{task.title}</TableCell>
-              <TableCell>{task.description}</TableCell>
+              <TableCell>{task.id}</TableCell>
+              <TableCell sx={{maxWidth: "130px"}}>{task.title}</TableCell>
+              <TableCell sx={{maxWidth: "650px"}}>{task.description}</TableCell>
               <TableCell>
                 {new Date(task.endDate).toLocaleDateString('pt-BR')}
               </TableCell>
