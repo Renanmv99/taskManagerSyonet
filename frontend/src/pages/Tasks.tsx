@@ -178,6 +178,16 @@ export default function Tasks() {
     setEditingTask(null);
   };
 
+  const countByStatus = useCallback(() => {
+    return {
+      pendente: tasks.filter(task => task.status === "Pendente").length,
+      completo: tasks.filter(task => task.status === "Completo").length,
+      cancelado: tasks.filter(task => task.status === "Cancelado").length
+    };
+  }, [tasks]);
+
+  const statusCounts = countByStatus();
+
   const handleTaskSubmit = async (data: TaskFormData): Promise<boolean> => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -219,8 +229,21 @@ export default function Tasks() {
               </Button>
             }
           </Box>
-          <Box>
-            <Typography>Total de Tarefas: {tasks.length}</Typography>
+          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <Typography variant="h6" sx={{ mb: 1 }}>
+              Total de Tarefas: {tasks.length}
+            </Typography>
+            <Box sx={{ display: "flex", gap: 2 }}>
+              <Typography variant="body2" sx={{ color: 'orange' }}>
+                Pendentes: {statusCounts.pendente}
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'green' }}>
+                Completas: {statusCounts.completo}
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'red' }}>
+                Canceladas: {statusCounts.cancelado}
+              </Typography>
+            </Box>
           </Box>
 
           <Box sx={{ display: "flex", gap: 2 }}>
