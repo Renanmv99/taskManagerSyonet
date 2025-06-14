@@ -31,9 +31,15 @@ export const TaskFilter = ({ users, isAdmin, onFilter, onClearFilters }: TaskFil
   const [showFilters, setShowFilters] = useState(false);
 
   const handleFilter = () => {
+    let adjustedEndDate = filterEndDate;
+    if (filterEndDate) {
+      const date = dayjs(filterEndDate).add(1, 'day');
+      adjustedEndDate = date.format('YYYY-MM-DD');
+    }
+
     const filters = {
       status: filterStatus || undefined,
-      endDate: filterEndDate || undefined,
+      endDate: adjustedEndDate || undefined,
       userId: filterAssigneeId || undefined,
     };
     onFilter(filters);

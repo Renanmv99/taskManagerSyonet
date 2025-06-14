@@ -33,9 +33,9 @@ public class TaskResource {
             @QueryParam("title") String title,
             @QueryParam("status") String status,
             @QueryParam("description") String description,
-            @QueryParam("endDate") String enDate,
+            @QueryParam("endDate") String endDate,
             @QueryParam("userId") Long userId) {
-        return taskService.listAll(title, status, description ,enDate, userId);
+        return taskService.listAll(title, status, description ,endDate, userId);
     }
 
     @POST
@@ -80,8 +80,8 @@ public class TaskResource {
             @QueryParam("title") String title,
             @QueryParam("status") String status,
             @QueryParam("description") String description,
-            @QueryParam("endDate") String enDate,
+            @QueryParam("endDate") String endDate,
             @QueryParam("userId") Long userId) {
-        return taskService.listAll(title, status, description ,enDate, userId);
+        return taskService.listAll(title, status, description ,endDate, userId);
     }
 }

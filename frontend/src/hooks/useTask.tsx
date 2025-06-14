@@ -76,7 +76,7 @@ export const useTasks = () => {
       const params = new URLSearchParams();
 
       if (filters?.status) params.append('status', filters.status);
-      if (filters?.endDate) params.append('endDateStr', filters.endDate);
+      if (filters?.endDate) params.append('endDate', filters.endDate);
       if (filters?.userId) params.append('userId', filters.userId);
       if (filters?.title) params.append('title', filters.title);
 
