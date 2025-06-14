@@ -1,13 +1,18 @@
 echo "Iniciando backend"
 
 cd backend || { echo "❌ Falha ao entrar na pasta backend"; exit 1; }
-./mvnw clean package || { echo "❌ Erro ao buildar o backend"; exit 1; }
+
+echo "Instalando dependências"
+./mvnw clean install package || { echo "❌ Erro ao buildar o backend"; exit 1; }
 cd ..
 
 echo "Iniciando frontend" 
 cd frontend || { echo "❌ Falha ao entrar na pasta frontend"; exit 1; }
 
+echo "Instalando dependências"
 npm install || { echo "❌ Erro ao rodar npm install"; exit 1; }
+
+echo "Buildando o projeto"
 npm run build || { echo "❌ Erro ao rodar npm run build"; exit 1; }
 cd ..
 

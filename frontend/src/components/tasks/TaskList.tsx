@@ -110,7 +110,6 @@ export const TaskList: React.FC<TaskListProps> = ({
                 <IconButton
                   color="primary"
                   onClick={() => onEdit(task)}
-                  title="Editar tarefa"
                 >
                   <EditIcon />
                 </IconButton>
@@ -119,7 +118,6 @@ export const TaskList: React.FC<TaskListProps> = ({
                 <IconButton
                   color="error"
                   onClick={() => onDelete(task.id)}
-                  title="Deletar tarefa"
                 >
                   <DeleteIcon />
                 </IconButton>
