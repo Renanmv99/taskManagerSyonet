@@ -3,7 +3,7 @@ package br.com.syonet.resource;
 import java.util.List;
 import java.util.Map;
 
-import br.com.syonet.dto.user.UpdateUserDTO;
+import br.com.syonet.dto.user.UserDTO;
 import br.com.syonet.dto.user.UserResponseDTO;
 import br.com.syonet.model.UserModel;
 import br.com.syonet.repository.UserRepository;
@@ -71,7 +71,7 @@ public class UserResource {
     @PATCH
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateUser(@PathParam("id") Long id, UpdateUserDTO update) {
+    public Response updateUser(@PathParam("id") Long id, UserDTO update) {
         boolean updated = userService.updateUser(id, update);
         return updated
                 ? Response.noContent().build()

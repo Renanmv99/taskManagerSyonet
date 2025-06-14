@@ -2,7 +2,7 @@ package br.com.syonet.service;
 
 import java.util.List;
 import org.mindrot.jbcrypt.BCrypt;
-import br.com.syonet.dto.user.UpdateUserDTO;
+import br.com.syonet.dto.user.UserDTO;
 import br.com.syonet.dto.user.UserResponseDTO;
 import br.com.syonet.model.TaskModel;
 import br.com.syonet.model.UserModel;
@@ -47,7 +47,7 @@ public class UserService {
     }
 
     @Transactional
-    public boolean updateUser(Long id, UpdateUserDTO update) {
+    public boolean updateUser(Long id, UserDTO update) {
         UserModel user = userRepository.findById(id);
         if (user == null) {
             return false;
