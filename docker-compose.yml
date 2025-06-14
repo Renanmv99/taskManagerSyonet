@@ -33,14 +33,14 @@ services:
       QUARKUS_DATASOURCE_JDBC_URL: jdbc:postgresql://postgres:5432/taskdb
       QUARKUS_HIBERNATE_ORM_DATABASE_GENERATION: ${HIBERNATE_DDL_AUTO:-update}
       QUARKUS_HIBERNATE_ORM_DATABASE_GENERATION_HALT_ON_ERROR: false
-      
+      QUARKUS_PROFILE: dev
+      QUARKUS_SMALLRYE_JWT_ENABLED: true
+      QUARKUS_HTTP_AUTH_PROACTIVE: false
       QUARKUS_HTTP_CORS: true
       QUARKUS_HTTP_CORS_ORIGINS: "http://localhost:3000,http://frontend:80,http://localhost:8080,http://localhost:5173"
       QUARKUS_HTTP_CORS_HEADERS: "accept,authorization,content-type,x-requested-with"
       QUARKUS_HTTP_CORS_METHODS: "GET,POST,PUT,DELETE,PATCH,OPTIONS"
 
-      SMALLRYE_JWT_SIGN_KEY: "my-secret-jwt-key-that-should-be-at-least-256-bits-long-for-hs256-algorithm-security"
-      MP_JWT_VERIFY_ISSUER: task-manager
       QUARKUS_LOG_LEVEL: INFO
       QUARKUS_LOG_CATEGORY_ORG_HIBERNATE_LEVEL: DEBUG
       

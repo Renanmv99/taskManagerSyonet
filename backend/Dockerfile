@@ -12,9 +12,11 @@ COPY --from=build --chown=185 /app/target/quarkus-app/lib/ /deployments/lib/
 COPY --from=build --chown=185 /app/target/quarkus-app/*.jar /deployments/
 COPY --from=build --chown=185 /app/target/quarkus-app/app/ /deployments/app/
 COPY --from=build --chown=185 /app/target/quarkus-app/quarkus/ /deployments/quarkus/
-COPY --from=build --chown=185 /app/src/main/resources/jwt-secret.key /deployments/jwt-secret.key
+COPY src/main/resources/publicKey.pem /deployments/publicKey.pem
+COPY src/main/resources/publicKey.pem /deployments/
 
 EXPOSE 8080
 USER 185
 ENV JAVA_OPTS_APPEND="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
 ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"
+ENV QUARKUS_PROFILE=dev
