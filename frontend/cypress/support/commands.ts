@@ -80,7 +80,7 @@ Cypress.Commands.add('createTaskWithAdmin', (taskData?: TaskData) => {
     cy.get('#createTaskDescription').type(finalTaskData.description)
     cy.get('.MuiPickersSectionList-root').type(finalTaskData.endDate)
     cy.get('#createTaskAssignee').click()
-    cy.contains('li', 'Renan Vicente teste').click();
+    cy.contains('li', 'admin').click();
     cy.get('#createTaskStatus').click()
     cy.get('#selectPendente').click()
     cy.get('.css-sg6wi7 > .MuiBox-root > #createTaskButton').click()

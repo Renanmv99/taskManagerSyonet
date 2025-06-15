@@ -4,20 +4,24 @@ describe('Registro de Usuário', () => {
     cy.visit('/');
   });
 
-  it('Deve tentar registrar um usuário já cadastrado', () => { 
+  it('Deve tentar registrar um usuário já cadastrado', () => {
     cy.register();
     cy.get('.MuiSnackbar-root > .MuiPaper-root').should('have.text', 'Email já cadastrado!')
   });
 
-  it('Deve realizar o cadastro com sucesso', () => {
+  it.only('Deve realizar o cadastro com sucesso e verificar se ele está na lista', () => {
     const timestamp = Date.now()
     const userData = {
-    name: 'Renan Vicente',
-    email: `task${timestamp}@gmail.com`,
-    password: '12345'
-  }
+      name: 'Task Manager User',
+      email: `task${timestamp}@gmail.com`,
+      password: '12345'
+    }
     cy.register(userData)
     cy.get('#loginButton').should('exist')
     cy.get('.MuiTypography-h5').should('have.text', 'Login')
+    cy.adminLogin()
+    cy.get('#usersButton').click()
+    cy.contains('tr', `task${timestamp}@gmail.com`)
+      .should('be.visible')
   })
 });
