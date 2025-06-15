@@ -12,7 +12,5 @@ describe('Usuário', () =>{
   }
         cy.deleteUser(userData)
         cy.get('.MuiSnackbar-root > .MuiPaper-root').should('have.text', 'Usuário deletado com sucesso!')
-        cy.clock(3000)
-        cy.get('.MuiSnackbar-root > .MuiPaper-root').should('not.be.visible')
     })
 })

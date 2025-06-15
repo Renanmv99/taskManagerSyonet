@@ -13,12 +13,14 @@ Projeto Fullstack para gerenciamento de Usuários e Tarefas, com backend em Quar
 
 ### Autenticação:
 - Registro e login com feedbacks
+- Log out
 - **AcessToken** e **RefreshToken**
 - Perfil de **User** e **Admin**
 
 ### Usuários:
 - Usuários podem ser criados, editados e excluídos
 - **Usuário admin pode ver, editar e deletar outros usuários**
+- A adição de um usuário é feita através do formulário de registro
  
  ### Tarefas
  - Tarefas podem ser criadas, editadas, filtradas e excluídas
