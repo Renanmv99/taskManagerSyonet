@@ -5,7 +5,7 @@ declare global {
     interface Chainable {
       userLogin(): Chainable<void>
       adminLogin(): Chainable<void>
-      deleteUser(userDataDeleted): Chainable<void>
+      deleteUser(userDataDeleted?: UserData): Chainable<void>
       createTaskWithUser(): Chainable<void>
       createTaskWithAdmin(taskData?: TaskData): Chainable<void>
       register(userData?: UserData): Chainable<void>

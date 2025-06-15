@@ -4,7 +4,7 @@ describe('Registro de Usuário', () => {
     cy.visit('/');
   });
 
-  it('Deve registrar tentar registrar um usuário já cadastrado', () => { 
+  it('Deve tentar registrar um usuário já cadastrado', () => { 
     cy.register();
     cy.get('.MuiSnackbar-root > .MuiPaper-root').should('have.text', 'Email já cadastrado!')
   });
@@ -20,6 +20,4 @@ describe('Registro de Usuário', () => {
     cy.get('#loginButton').should('exist')
     cy.get('.MuiTypography-h5').should('have.text', 'Login')
   })
-
-
 });
