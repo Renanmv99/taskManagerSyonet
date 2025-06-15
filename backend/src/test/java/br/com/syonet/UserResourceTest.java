@@ -2,43 +2,20 @@ package br.com.syonet;
 
 import static io.restassured.RestAssured.given;
 
-import java.time.LocalDate;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.hamcrest.Matchers.*;
 
-import br.com.syonet.dto.task.TaskRequestDTO;
 import br.com.syonet.dto.user.UserDTO;
+import static org.hamcrest.Matchers.*;
 import br.com.syonet.dto.user.UserLoginDTO;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 
 @QuarkusTest
-public class TaskResourceTest {
+public class UserResourceTest {
 
-    TaskRequestDTO task = new TaskRequestDTO();
     private static String token;
-
-    private int createTask() {
-        TaskRequestDTO task = new TaskRequestDTO();
-        task.title = "Task de teste";
-        task.description = "Criada on demand";
-        task.endDate = LocalDate.now().plusDays(5);
-        task.status = "Pendente";
-        task.userId = 1L;
-
-        return given()
-                .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + token)
-                .body(task)
-                .when()
-                .post("/task")
-                .then()
-                .statusCode(201)
-                .extract()
-                .path("id");
-    }
+    UserDTO user = new UserDTO();
 
     @BeforeEach
     public void shouldRegisterAndLogin() {
@@ -73,60 +50,61 @@ public class TaskResourceTest {
     }
 
     @Test
-    public void shoulGetTasks(){
-        createTask();
+    public void shouldGetUsers(){
         given()
                 .header("Authorization", "Bearer " + token)
-                .get("task")
+                .when()
+                .get("/user")
                 .then()
                 .statusCode(200)
                 .body("$", is(not(empty())));
     }
 
-
     @Test
-    public void shouldCreateTask() {
-        task.title = "Título tarefa teste";
-        task.description = "Descrição tarefa teste";
-        task.endDate = LocalDate.parse("2025-06-25");
-        task.status = "Pendente";
-        task.userId = 1L;
-
-        given()
-                .contentType(ContentType.JSON)
-                .body(task)
-                .when()
-                .post("/task")
-                .then()
-                .statusCode(201);
-    }
-
-    @Test
-    public void shouldUpdateTask() {
-        int taskId = createTask();
-        task.title = "Tarefa atualizada";
-        task.description = "Descrição atualizada";
-        task.endDate = LocalDate.parse("2026-07-28");
-        task.status = "Cancelado";
+    public void shoulCreateUser() {
+        user.name = "Novo usuário";
+        user.email = "newuser@gmail.com";
+        user.password = "12345";
+        user.admin = true;
 
         given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + token)
-                .body(task)
+                .body(user)
                 .when()
-                .patch("/task/" + taskId)
+                .post("/user")
                 .then()
-                .statusCode(200);
+                .statusCode(201)
+                .extract()
+                .response();
     }
 
     @Test
-    public void shouldDeleteTask(){
-        int taskId = createTask();
-        
+    public void shouldUpdateUser(){
+        user.name = "Usuário atualizado";
+        user.password = "emailatualizado";
+        user.password = "54321";
+        user.admin = false;
+
+        given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + token)
+                .body(user)
+                .when()
+                .patch("/user/1")
+                .then()
+                .statusCode(204)
+                .extract()
+                .response();
+    }
+
+
+    @Test
+    public void shouldDeleteUser() {
         given()
                 .header("Authorization", "Bearer " + token)
                 .when()
-                .delete("/task/" + taskId)
+                .delete("/user/1")
                 .then()
                 .statusCode(204);
     }

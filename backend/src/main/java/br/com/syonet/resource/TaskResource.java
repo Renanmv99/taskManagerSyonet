@@ -3,7 +3,6 @@ package br.com.syonet.resource;
 import java.util.List;
 
 import br.com.syonet.dto.task.TaskRequestDTO;
-import br.com.syonet.dto.task.UpdateTaskDTO;
 import br.com.syonet.model.TaskModel;
 import br.com.syonet.service.TaskService;
 import jakarta.annotation.security.RolesAllowed;
@@ -65,7 +64,7 @@ public class TaskResource {
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateTask(@PathParam("id") Long id, UpdateTaskDTO request) {
+    public Response updateTask(@PathParam("id") Long id, TaskRequestDTO request) {
         TaskModel updatedTask = taskService.updateTask(id, request);
         return updatedTask != null
                 ? Response.ok(updatedTask).build()

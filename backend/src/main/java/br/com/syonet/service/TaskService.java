@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import br.com.syonet.dto.task.TaskRequestDTO;
-import br.com.syonet.dto.task.UpdateTaskDTO;
 import br.com.syonet.model.TaskModel;
 import br.com.syonet.model.UserModel;
 import br.com.syonet.repository.TaskRepository;
@@ -101,7 +100,7 @@ public class TaskService {
     }
 
     @Transactional
-    public TaskModel updateTask(Long id, UpdateTaskDTO request) {
+    public TaskModel updateTask(Long id, TaskRequestDTO request) {
         TaskModel task = TaskModel.findById(id);
         if (task == null)
             return null;

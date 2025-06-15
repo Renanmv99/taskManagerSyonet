@@ -5,7 +5,7 @@ declare global {
     interface Chainable {
       userLogin(): Chainable<void>
       adminLogin(): Chainable<void>
-      deleteUser(): Chainable<void>
+      deleteUser(userDataDeleted): Chainable<void>
       createTaskWithUser(): Chainable<void>
       createTaskWithAdmin(taskData?: TaskData): Chainable<void>
       register(userData?: UserData): Chainable<void>
@@ -62,7 +62,7 @@ Cypress.Commands.add('adminLogin', () =>{
 })
 
 Cypress.Commands.add('createTaskWithUser', () => {
-    cy.get('#createTaskButton').click()
+    cy.get('#addTaskButton').click()
     cy.get('#createTaskTitle').type('Task do teste Cypress')
     cy.get('#createTaskDescription').type('Descrição do teste Cypress')
     cy.get('.MuiPickersSectionList-root').type('22-08-2025')
@@ -75,7 +75,7 @@ Cypress.Commands.add('createTaskWithUser', () => {
 Cypress.Commands.add('createTaskWithAdmin', (taskData?: TaskData) => {
     const finalTaskData = { ...defaultTaskData, ...taskData }
 
-    cy.get('#createTaskButton').click()
+    cy.get('#addTaskButton').click()
     cy.get('#createTaskTitle').type(finalTaskData.title)
     cy.get('#createTaskDescription').type(finalTaskData.description)
     cy.get('.MuiPickersSectionList-root').type(finalTaskData.endDate)
@@ -86,13 +86,9 @@ Cypress.Commands.add('createTaskWithAdmin', (taskData?: TaskData) => {
     cy.get('.css-sg6wi7 > .MuiBox-root > #createTaskButton').click()
 })
 
-Cypress.Commands.add('deleteUser', () => {
-    const userData = {
-    name: "Usuário deletado",
-    email: "usuariodeletado@gmail.com",
-    password: "12345"
-  }
-    cy.register(userData)
+Cypress.Commands.add('deleteUser', (userDataDeleted) => {
+
+    cy.register(userDataDeleted)
     cy.adminLogin()
     cy.get('#usersButton').click()
     cy.contains('tr', 'Usuário deletado')

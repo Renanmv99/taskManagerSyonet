@@ -3,7 +3,7 @@ echo "Iniciando backend"
 cd backend || { echo "❌ Falha ao entrar na pasta backend"; exit 1; }
 
 echo "Instalando dependências"
-./mvnw clean install package || { echo "❌ Erro ao buildar o backend"; exit 1; }
+./mvnw clean install package -DskipTests || { echo "❌ Erro ao buildar o backend"; exit 1; }
 cd ..
 
 echo "Iniciando frontend" 

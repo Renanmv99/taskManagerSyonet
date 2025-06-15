@@ -220,7 +220,7 @@ export default function Tasks() {
         <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: 2, mb: 2 }}>
           <Box>
             {
-              <Button
+              <Button id="addTaskButton"
               variant="contained"
               startIcon={<AddIcon />}
               onClick={openCreateModal}

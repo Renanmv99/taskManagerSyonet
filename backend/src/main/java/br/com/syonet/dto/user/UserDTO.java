@@ -24,4 +24,10 @@ public class UserDTO {
     public void setPassword(String password) {
         this.password = password;
     }
+    public Boolean getAdmin() {
+        return admin;
+    }
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
+    }
 }

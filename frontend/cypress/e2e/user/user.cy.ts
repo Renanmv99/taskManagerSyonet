@@ -4,7 +4,13 @@ describe('Usuário', () =>{
   });
 
     it('Deve excluir usuário com sucesso', () =>{
-        cy.deleteUser()
+          const timestamp = Date.now()
+          const userData = {
+          name: 'Usuário deletado',
+          email: `deletado${timestamp}@gmail.com`,
+          password: '12345'
+  }
+        cy.deleteUser(userData)
         cy.get('.MuiSnackbar-root > .MuiPaper-root').should('have.text', 'Usuário deletado com sucesso!')
         cy.clock(3000)
         cy.get('.MuiSnackbar-root > .MuiPaper-root').should('not.be.visible')
