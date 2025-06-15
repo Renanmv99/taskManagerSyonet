@@ -145,7 +145,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
       <DialogContent>
         <Box component="form" onSubmit={handleSubmit}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
-            <TextField
+            <TextField id="createTaskTitle"
               label="Título"
               required
               fullWidth
@@ -154,7 +154,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
               disabled={isSubmitting}
             />
 
-            <TextField
+            <TextField id="createTaskDescription"
               label="Descrição"
               required
               fullWidth
@@ -165,7 +165,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
               disabled={isSubmitting}
             />
 
-            <DatePicker
+            <DatePicker 
               label="Data de Entrega"
               value={endDate ? dayjs(endDate) : null}
               onChange={(newValue) => {
@@ -185,7 +185,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
             {isAdmin && (
               <FormControl fullWidth required>
                 <InputLabel>Responsável</InputLabel>
-                <Select
+                <Select id="createTaskAssignee"
                   value={assigneeId}
                   onChange={(e) => setAssigneeId(e.target.value as number)}
                   label="Responsável"
@@ -205,13 +205,13 @@ export const TaskModal: React.FC<TaskModalProps> = ({
 
             <FormControl fullWidth required>
               <InputLabel>Status</InputLabel>
-              <Select
+              <Select id="createTaskStatus"
                 value={status}
                 onChange={(e) => setStatus(e.target.value as "Pendente" | "Completo" | "Cancelado")}
                 label="Status"
                 disabled={isSubmitting}
               >
-                <MenuItem value="Pendente">Pendente</MenuItem>
+                <MenuItem id="selectPendente" value="Pendente">Pendente</MenuItem>
                 <MenuItem value="Completo">Completo</MenuItem>
                 <MenuItem value="Cancelado">Cancelado</MenuItem>
               </Select>
@@ -224,6 +224,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                 Cancelar
               </Button>
               <Button
+                id="createTaskButton"
                 type="submit"
                 variant="contained"
                 disabled={isSubmitting || !assigneeId}

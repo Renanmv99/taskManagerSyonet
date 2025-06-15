@@ -38,7 +38,7 @@ export const Header = () => {
                     <IconButton color="inherit" >
                         <AddTaskOutlinedIcon />
                     </IconButton>
-                    <Typography variant="h6">Gerenciador de Tarefas</Typography>
+                    <Typography id="headerTitle" variant="h6">Gerenciador de Tarefas</Typography>
                 </Box>
 
                 <Box sx={{ display: "flex", alignItems: "center", gap: "15px" }}>
@@ -50,7 +50,7 @@ export const Header = () => {
                         </IconButton>
                     </Tooltip>
                     {isAdmin && <Tooltip title="Usuários">
-                        <IconButton color="inherit" onClick={() => {
+                        <IconButton id="usersButton" color="inherit" onClick={() => {
                             navigate("/user");
                         }}>
                             <PeopleIcon />

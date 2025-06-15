@@ -36,7 +36,9 @@ public class AuthResourceTest {
         .when()
             .post("/auth/register")
         .then()
-            .statusCode(201);
+            .statusCode(201)
+            .extract()
+            .response();
     }
 
     @Test

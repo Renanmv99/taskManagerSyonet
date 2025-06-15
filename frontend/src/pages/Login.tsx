@@ -81,7 +81,7 @@ export default function Login() {
           Login
         </Typography>
         <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
-          <TextField
+          <TextField id="loginEmail"
             placeholder="Email"
             fullWidth
             value={email}
@@ -92,7 +92,7 @@ export default function Login() {
             onChange={(e) => setEmail(e.target.value)}
           />
           
-          <TextField
+          <TextField id="loginPassword"
             placeholder="Senha"
             fullWidth
             required
@@ -102,7 +102,7 @@ export default function Login() {
           />
 
           {error && <p style={{ color: "red" }}>{error}</p>}
-          <Button type="submit" variant="contained" fullWidth sx={{ mt: 1 }}>
+          <Button id="loginButton" type="submit" variant="contained" fullWidth sx={{ mt: 1 }}>
             Entrar
           </Button>
           <Box sx={{
@@ -116,7 +116,7 @@ export default function Login() {
             <Typography>
               Não tem uma conta?
             </Typography>
-            <Button
+            <Button id="registerBtn"
               onClick={() => navigate("/register")}
             >
               Registrar

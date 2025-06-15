@@ -123,7 +123,7 @@ export default function Register() {
           navigate("/");
         }, 1500)
       } else if (res.status === 409) {
-        showSnackbar("Email já cadastrado!", "error");
+        showSnackbar("Email já cadastrado!", "error"); 
       } else if (res.status === 400) {
         const errorData = await res.json();
         showSnackbar(errorData.message || "Dados inválidos!", "error");
@@ -155,7 +155,7 @@ export default function Register() {
 
           <Box component="form" onSubmit={handleRegister} noValidate sx={{ mt: 1 }}>
 
-            <TextField
+            <TextField id="registerNameField"
               fullWidth
               value={name}
               placeholder="Nome completo"
@@ -165,7 +165,7 @@ export default function Register() {
               onChange={(e) => setName(e.target.value)}
             />
 
-            <TextField
+            <TextField id="registerEmailField"
               placeholder="Email"
               fullWidth
               required
@@ -175,7 +175,7 @@ export default function Register() {
               onChange={(e) => setEmail(e.target.value)}
             />
 
-            <TextField
+            <TextField id="registerPasswordField"
               placeholder="Senha"
               fullWidth
               required
@@ -185,7 +185,7 @@ export default function Register() {
               onChange={(e) => setPassword(e.target.value)}
             />
 
-            <TextField
+            <TextField id="registerConfirmPasswordField"
               placeholder="Confirme a senha"
               fullWidth
               required
@@ -202,7 +202,7 @@ export default function Register() {
               />
             )}
 
-            <Button type="submit" variant="contained" fullWidth sx={{ mt: 1 }}>
+            <Button id="registerButton" type="submit" variant="contained" fullWidth sx={{ mt: 1 }}>
               Registrar
             </Button>
           </Box>
