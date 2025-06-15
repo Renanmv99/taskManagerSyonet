@@ -212,7 +212,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                 disabled={isSubmitting}
               >
                 <MenuItem id="selectPendente" value="Pendente">Pendente</MenuItem>
-                <MenuItem value="Completo">Completo</MenuItem>
+                <MenuItem id="selectCompleto" value="Completo">Completo</MenuItem>
                 <MenuItem value="Cancelado">Cancelado</MenuItem>
               </Select>
             </FormControl>

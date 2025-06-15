@@ -122,7 +122,7 @@ export const TaskList: React.FC<TaskListProps> = ({
               </TableCell>
               <TableCell align="center">
                 <Tooltip title="Editar tarefa">
-                  <IconButton
+                  <IconButton id="editTaskButton"
                     color="primary"
                     onClick={() => onEdit(task)}
                   >
