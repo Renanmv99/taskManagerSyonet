@@ -14,6 +14,7 @@ import { TaskSearch } from "../components/TaskSearch";
 import { TaskList } from "../components/tasks/TaskList";
 import { TaskModal } from "../components/tasks/TaskModal";
 import { useTasks } from "../hooks/useTask";
+import { parseJwt } from "../utils/jwt";
 
 interface Task {
   id: number;
@@ -41,14 +42,6 @@ interface TaskFormData {
   endDate: string;
   userId: number;
   status: "Pendente" | "Completo" | "Cancelado";
-}
-
-function parseJwt(token: string) {
-  try {
-    return JSON.parse(atob(token.split(".")[1]));
-  } catch (e) {
-    return null;
-  }
 }
 
 export default function Tasks() {

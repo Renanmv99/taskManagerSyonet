@@ -6,14 +6,7 @@ import TaskIcon from '@mui/icons-material/Task';
 import Tooltip from '@mui/material/Tooltip';
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-
-function parseJwt(token: string) {
-    try{
-        return JSON.parse(atob(token.split(".")[1]));
-    }catch(e){
-        return null;
-    }
-}
+import { parseJwt } from "../utils/jwt";
 
 export const Header = () => {
     const [isAdmin, setIsAdmin] = useState(false);
@@ -28,8 +21,6 @@ export const Header = () => {
                 }
         }
     }, []);
-
-
 
     return (
         <AppBar position="fixed" color="primary">

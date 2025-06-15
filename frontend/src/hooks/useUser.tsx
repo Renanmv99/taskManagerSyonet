@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { parseJwt } from "../utils/jwt";
 
 interface User {
   id: number;
@@ -12,14 +13,6 @@ interface SnackbarState {
   open: boolean;
   message: string;
   severity: "success" | "error";
-}
-
-function parseJwt(token: string) {
-  try {
-    return JSON.parse(atob(token.split(".")[1]));
-  } catch (e) {
-    return null;
-  }
 }
 
 export const useUser = () => {
