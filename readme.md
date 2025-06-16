@@ -1,6 +1,6 @@
 # Task Manager - Syonet
 
-Projeto Fullstack para gerenciamento de Usuários e Tarefas, com backend em Quarkus (Java), frontend em React + TypeScript.
+**Projeto Fullstack para gerenciamento de Usuários e Tarefas, com backend em Quarkus (Java), frontend em React + TypeScript.**
 
 ## Tecnologias utilizadas
  - Backend: Quarkus (Java 21)
@@ -23,7 +23,7 @@ Projeto Fullstack para gerenciamento de Usuários e Tarefas, com backend em Quar
 - A adição de um usuário é feita através do formulário de registro
  
  ### Tarefas
- - Tarefas podem ser criadas, editadas, filtradas e excluídas
+- Tarefas podem ser criadas, editadas, filtradas e excluídas
 - Apenas o usuário **admin** pode **excluir** tarefas
 - Usuário **admin** pode atribuir tarefas a outros usuários
 - Usuário **admin** pode ver e editar todas as tarefas
@@ -52,6 +52,7 @@ Projeto Fullstack para gerenciamento de Usuários e Tarefas, com backend em Quar
 - Há um insert de usuário admin padrão no projeto, com email: **admin@gmail.com** e senha **12345**, assim como um usuário **User TaskManager**, ambos serão necessários para executar os testes Cypress
 - Se ocorrer algum erro no insert inicial, ao realizar o registro sem nenhum usuário no banco de dados, o primeiro usuário por padrão sempre será **admin**
 - Apenas o usuário admin pode atribuir tarefas a outros usuários e excluir tarefas, além de listar, excluir e editar outros usuários
+- Para todos os casos, é necessário um banco `taskdb` (desenvolvimento) e um banco `taskdb_test` (testes)
 
 ### Docker (ou script shell)
 - Docker: na raiz no projeto, rodar `docker compose up -d --build`
